@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+//Modelos
+
+//-----------------Users-------------------------
+model User{
+  Id Int @id @default(autoincrement())
+  Email String @unique
+  Name String?
+  Number String
+  Password Bytes?
+  RolUser Role[]
+  RecicleCenter RecicleCenter []
+  Wallet Wallet[]
+}
+
+model Role{
+  Id Int @id @default(autoincrement())
+  Name String
+  UserRole User[]
+}
+//----------------Materiales y acopio-------------------
+model RecicleCenter{
+  Id Int @id @default(autoincrement())
+  Name String
+  Provincia String
+  Canton String
+  Distrito String
+  Numero String
+  Email String
+  Schecudale String
+  UserAdmin Int
+  User User @relation(fields: [UserAdmin],references: [Id])
+  Materials Material[]
+}
+
+model Material{
+Id Int @id @default(autoincrement())
+Name String
+Description String
+Image Bytes? 
+Color String
+Unit  String
+Price Decimal
+RecicleCenter RecicleCenter[]
+OrdenDetail OrdenDetail[]
+}
+//-----------Cupons & Coins---------------------------
+model Wallet{
+  Id Int @id @default(autoincrement())
+  IdUser Int
+  Token  Bytes?
+  AvaibleCoins Decimal
+  ChangesCoins Decimal
+  RecivedCoins Decimal
+  User User @relation(fields: [IdUser],references: [Id])
+}
+
+model Cupon{
+Id Int @id @default(autoincrement())
+IdUser Int
+Description String
+Image Bytes?
+ValiteDate DateTime
+Price Decimal
+Estado Boolean
+Category Category[]
+}
+
+model Category{
+Id Int @id @default(autoincrement())
+Name String
+Cupon Cupon []
+}
+
+model Orden{
+Id Int @id @default(autoincrement())
+IdUser Int
+IdCenter Int
+Date DateTime
+OrdenDetail OrdenDetail[]
+}
+
+model OrdenDetail{
+@@id([OrdenId,MaterialId])
+OrdenId Int
+MaterialId Int
+Cantidad Int
+Material Material @relation(fields: [MaterialId],references: [Id])
+Orden Orden @relation(fields: [OrdenId],references: [Id])
+}
