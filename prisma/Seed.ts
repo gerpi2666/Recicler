@@ -6,10 +6,10 @@ async function seed() {
   // Crear un usuario de ejemplo
   const user = await prisma.user.create({
     data: {
-      Email: 'usuario@example.com',
-      Name: 'Usuario Ejemplo',
-      Number: '123456789',
-      Password: 'hashedpassword', // Reemplaza con una contraseña hash real
+      Email: 'admin@prueba.com',
+      Name: 'Lg',
+      Number: '88387319',
+      Password: '123456', // Reemplaza con una contraseña hash real
     },
   });
 
@@ -23,13 +23,13 @@ async function seed() {
   // Crear un centro de reciclaje de ejemplo
   const recicleCenter = await prisma.recicleCenter.create({
     data: {
-      Name: 'Centro de Reciclaje Ejemplo',
-      Provincia: 'Provincia Ejemplo',
-      Canton: 'Canton Ejemplo',
-      Distrito: 'Distrito Ejemplo',
-      Numero: '123',
-      Email: 'centro@example.com',
-      Schecudale: 'Horario de Ejemplo',
+      Name: 'Pulperia San Agustin',
+      Provincia: 'Alajuela',
+      Canton: 'Alajuela',
+      Distrito: 'Guacima ',
+      Numero: '24387319',
+      Email: 'sg@example.com',
+      Schecudale: '07:00am - 3:00pm',
       UserAdmin: user.Id,
     },
   });
@@ -37,11 +37,11 @@ async function seed() {
   // Crear un material de ejemplo
   const material = await prisma.material.create({
     data: {
-      Name: 'Material de Ejemplo',
-      Description: 'Descripción de Material Ejemplo',
+      Name: 'Cobre',
+      Description: 'Material conductor fundible',
       Image: null, // Reemplaza con datos de imagen si es necesario
-      Color: 'Color Ejemplo',
-      Unit: 'Unidad Ejemplo',
+      Color: 'Cafe',
+      Unit: 'kg',
       Price: 10.99,
     },
   });
@@ -61,7 +61,7 @@ async function seed() {
   const cupon = await prisma.cupon.create({
     data: {
       IdUser: user.Id,
-      Description: 'Cupón de Ejemplo',
+      Description: '3 noches en barcelo',
       Image: null, // Reemplaza con datos de imagen si es necesario
       ValiteDate: new Date('2023-12-31'),
       Price: 5.0,
