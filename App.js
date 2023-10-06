@@ -19,7 +19,7 @@ const port=process.env.PORT || 3000;
 dotEnv.config();
 
 
-app/use(cors());
+app.use(cors());
 
 app.use(logger("dev"))
 
