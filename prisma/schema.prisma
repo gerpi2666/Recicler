@@ -15,6 +15,7 @@ datasource db {
 //-----------------Users-------------------------
 model User{
   Id Int @id @default(autoincrement())
+  Identification String @unique
   Email String @unique
   IdRol Int @unique
   Name String?
@@ -43,6 +44,7 @@ model RecicleCenter{
   Email String
   Schecudale String
   UserAdmin Int
+  Enabled Boolean
   User User @relation(fields: [UserAdmin],references: [Id])
   Materials Material[]
   Orden Orden []
