@@ -16,18 +16,21 @@ datasource db {
 model User{
   Id Int @id @default(autoincrement())
   Email String @unique
+  IdRol Int @unique
   Name String?
   Number String
   Password Bytes?
-  RolUser Role[]
+  Orden Orden []
+  Cupon Cupon []
   RecicleCenter RecicleCenter []
   Wallet Wallet[]
+  Role Role @relation(fields: [IdRol], references: [Id])
 }
 
 model Role{
   Id Int @id @default(autoincrement())
   Name String
-  UserRole User[]
+  User User []
 }
 //----------------Materiales y acopio-------------------
 model RecicleCenter{
@@ -42,6 +45,7 @@ model RecicleCenter{
   UserAdmin Int
   User User @relation(fields: [UserAdmin],references: [Id])
   Materials Material[]
+  Orden Orden []
 }
 
 model Material{
@@ -75,6 +79,7 @@ ValiteDate DateTime
 Price Decimal
 Estado Boolean
 Category Category[]
+User User @relation(fields: [IdUser],references: [Id])
 }
 
 model Category{
@@ -88,7 +93,11 @@ Id Int @id @default(autoincrement())
 IdUser Int
 IdCenter Int
 Date DateTime
+Total Decimal
 OrdenDetail OrdenDetail[]
+User User @relation(fields: [IdUser],references: [Id])
+RecicleCenter RecicleCenter @relation(fields: [IdCenter],references: [Id])
+
 }
 
 model OrdenDetail{
@@ -96,6 +105,7 @@ model OrdenDetail{
 OrdenId Int
 MaterialId Int
 Cantidad Int
+Subtotal Decimal
 Material Material @relation(fields: [MaterialId],references: [Id])
 Orden Orden @relation(fields: [OrdenId],references: [Id])
 }
