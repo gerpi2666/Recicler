@@ -1,12 +1,17 @@
 -- CreateTable
 CREATE TABLE `User` (
     `Id` INTEGER NOT NULL AUTO_INCREMENT,
+    `Identification` VARCHAR(191) NOT NULL,
     `Email` VARCHAR(191) NOT NULL,
+    `IdRol` INTEGER NOT NULL,
     `Name` VARCHAR(191) NULL,
     `Number` VARCHAR(191) NOT NULL,
+    `Direccion` VARCHAR(191) NOT NULL,
     `Password` LONGBLOB NULL,
 
+    UNIQUE INDEX `User_Identification_key`(`Identification`),
     UNIQUE INDEX `User_Email_key`(`Email`),
+    UNIQUE INDEX `User_IdRol_key`(`IdRol`),
     PRIMARY KEY (`Id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -29,6 +34,7 @@ CREATE TABLE `RecicleCenter` (
     `Email` VARCHAR(191) NOT NULL,
     `Schecudale` VARCHAR(191) NOT NULL,
     `UserAdmin` INTEGER NOT NULL,
+    `Enabled` BOOLEAN NOT NULL,
 
     PRIMARY KEY (`Id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -85,6 +91,7 @@ CREATE TABLE `Orden` (
     `IdUser` INTEGER NOT NULL,
     `IdCenter` INTEGER NOT NULL,
     `Date` DATETIME(3) NOT NULL,
+    `Total` DECIMAL(65, 30) NOT NULL,
 
     PRIMARY KEY (`Id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -94,17 +101,9 @@ CREATE TABLE `OrdenDetail` (
     `OrdenId` INTEGER NOT NULL,
     `MaterialId` INTEGER NOT NULL,
     `Cantidad` INTEGER NOT NULL,
+    `Subtotal` DECIMAL(65, 30) NOT NULL,
 
     PRIMARY KEY (`OrdenId`, `MaterialId`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `_RoleToUser` (
-    `A` INTEGER NOT NULL,
-    `B` INTEGER NOT NULL,
-
-    UNIQUE INDEX `_RoleToUser_AB_unique`(`A`, `B`),
-    INDEX `_RoleToUser_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -126,22 +125,28 @@ CREATE TABLE `_CategoryToCupon` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_IdRol_fkey` FOREIGN KEY (`IdRol`) REFERENCES `Role`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `RecicleCenter` ADD CONSTRAINT `RecicleCenter_UserAdmin_fkey` FOREIGN KEY (`UserAdmin`) REFERENCES `User`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Wallet` ADD CONSTRAINT `Wallet_IdUser_fkey` FOREIGN KEY (`IdUser`) REFERENCES `User`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Cupon` ADD CONSTRAINT `Cupon_IdUser_fkey` FOREIGN KEY (`IdUser`) REFERENCES `User`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Orden` ADD CONSTRAINT `Orden_IdUser_fkey` FOREIGN KEY (`IdUser`) REFERENCES `User`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Orden` ADD CONSTRAINT `Orden_IdCenter_fkey` FOREIGN KEY (`IdCenter`) REFERENCES `RecicleCenter`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `OrdenDetail` ADD CONSTRAINT `OrdenDetail_MaterialId_fkey` FOREIGN KEY (`MaterialId`) REFERENCES `Material`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `OrdenDetail` ADD CONSTRAINT `OrdenDetail_OrdenId_fkey` FOREIGN KEY (`OrdenId`) REFERENCES `Orden`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_RoleToUser` ADD CONSTRAINT `_RoleToUser_A_fkey` FOREIGN KEY (`A`) REFERENCES `Role`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_RoleToUser` ADD CONSTRAINT `_RoleToUser_B_fkey` FOREIGN KEY (`B`) REFERENCES `User`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_MaterialToRecicleCenter` ADD CONSTRAINT `_MaterialToRecicleCenter_A_fkey` FOREIGN KEY (`A`) REFERENCES `Material`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
