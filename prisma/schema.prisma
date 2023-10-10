@@ -20,6 +20,7 @@ model User{
   IdRol Int @unique
   Name String?
   Number String
+  Direccion String
   Password Bytes?
   Orden Orden []
   Cupon Cupon []
