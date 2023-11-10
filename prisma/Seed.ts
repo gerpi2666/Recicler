@@ -9,6 +9,9 @@ async function seed() {
       Email: 'admin@prueba.com',
       Name: 'Lg',
       Number: '88387319',
+      Direccion: 'Dirección de ejemplo',
+      Identification: 'ID123',
+      IdRol: 1,
       Password: '123456', // Reemplaza con una contraseña hash real
     },
   });
@@ -30,7 +33,12 @@ async function seed() {
       Numero: '24387319',
       Email: 'sg@example.com',
       Schecudale: '07:00am - 3:00pm',
-      UserAdmin: user.Id,
+      Enabled: true,
+      User: {
+        connect: {
+          Id: user.Id, // Reemplaza con el ID del usuario correspondiente
+        },
+      },
     },
   });
 
@@ -82,6 +90,7 @@ async function seed() {
       IdUser: user.Id,
       IdCenter: recicleCenter.Id,
       Date: new Date(),
+      Total: 0
     },
   });
 
@@ -91,6 +100,7 @@ async function seed() {
       OrdenId: orden.Id,
       MaterialId: material.Id,
       Cantidad: 2,
+      Subtotal:0,
     },
   });
 
