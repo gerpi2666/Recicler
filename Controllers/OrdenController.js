@@ -1,13 +1,14 @@
 //#region Imports
-import {ResponseModel} from '../Models/GenericModels';
-import {HttpStatus} from '../Models/Enums'
+
 //#endregion
 
 //#region Requires
 const { PrismaClient, Prisma } = require('@prisma/client');
+const {ResponseModel}=require('../Models/GenericModels');
+const {HttpStatus}= require('../Models/Enums')
 //#endregion
 
-//#region Instancias
+//#region Intancias
 const prisma = new PrismaClient();
 const response= new ResponseModel();
 //#endregion

@@ -1,16 +1,17 @@
-//#region imports
-import {ResponseModel} from '../Models/GenericModels';
-import {HttpStatus} from '../Models/Enums'
-// #endregion
+//#region Imports
 
-//#region requires
+//#endregion
+
+//#region Requires
 const { PrismaClient, Prisma } = require('@prisma/client');
-// #endregion
+const {ResponseModel}=require('../Models/GenericModels');
+const {HttpStatus}= require('../Models/Enums')
+//#endregion
 
-//#region instancias
+//#region Intancias
 const prisma = new PrismaClient();
 const response= new ResponseModel();
-// #endregion
+//#endregion
 
 
 module.exports.get = async (req, res, next) => {
