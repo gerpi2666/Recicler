@@ -4,4 +4,4 @@ const HttpStatus = {
     SERVER_ERROR: '500',
 };
 
-module.exports= HttpStatus
+module.exports = { HttpStatus }; 

@@ -18,10 +18,7 @@ module.exports.get = async (req, res, next) => {
     const users = await prisma.user.findMany({
       orderBy: {
         Id: 'asc',
-      },
-      include: {
-        User: true,
-      },
+      }
     });
 
     response.StatusCode= users? HttpStatus.OK : HttpStatus.NOT_FOUND;

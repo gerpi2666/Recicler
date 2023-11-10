@@ -19,10 +19,7 @@ module.exports.get = async (req, res, next) => {
   const cupon = await prisma.cupon.findMany({
     orderBy: {
       Id: 'asc',
-    },
-    include: {
-      User: true,
-    },
+    }
   });
 
   response.StatusCode= cupon? HttpStatus.OK : HttpStatus.NOT_FOUND;

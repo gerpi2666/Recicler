@@ -19,11 +19,9 @@ module.exports.get = async (req, res, next) => {
       orderBy: {
         Id: 'asc',
       },
-      include: {
-        User: true,
-      },
+      
     });
-
+      response.Message='ojete'
       response.StatusCode= materials? HttpStatus.OK : HttpStatus.NOT_FOUND;
       response.Message = materials ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
       response.Data=materials;

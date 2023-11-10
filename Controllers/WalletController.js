@@ -19,10 +19,7 @@ module.exports.get = async (req, res, next) => {
     const wallets = await prisma.wallet.findMany({
     orderBy: {
       Id: 'asc',
-    },
-    include: {
-      User: true,
-    },
+    }
   });
 
       response.StatusCode= wallets? HttpStatus.OK : HttpStatus.NOT_FOUND;
