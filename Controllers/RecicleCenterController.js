@@ -1,7 +1,19 @@
+//#region Imports
+import {ResponseModel} from '../Models/GenericModels';
+import {HttpStatus} from '../Models/Enums'
+//#endregion
+
+//#region Requires
 const { PrismaClient, Prisma } = require('@prisma/client');
+//#endregion
+
+//#region Instancias
 const prisma = new PrismaClient();
+const response= new ResponseModel();
+//#endregion
 
 module.exports.get = async (req, res, next) => {
+  try {
     const recicleCenter = await prisma.recicleCenter.findMany({
       orderBy: {
         Id: 'asc',
@@ -10,10 +22,23 @@ module.exports.get = async (req, res, next) => {
         User: true,
       },
     });
-    res.json(recicleCenter);
-  };
 
-  module.exports.getById = async (req, res, next) => {
+    response.StatusCode= recicleCenter? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = recicleCenter ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=recicleCenter;
+
+  } catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+  } finally {
+    res.json(response);
+  }   
+};
+
+module.exports.getById = async (req, res, next) => {
+  try {
     let id = parseInt(req.params.Id);
     const recicleCenter = await prisma.recicleCenter.findUnique({
       where: { Id: id },
@@ -22,5 +47,17 @@ module.exports.get = async (req, res, next) => {
         Materials: true
     },
     });
-    res.json(recicleCenter);
-  };
+
+    response.StatusCode= recicleCenter? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = recicleCenter ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=recicleCenter;
+
+  } catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+  } finally {
+    res.json(response);
+  }   
+};
