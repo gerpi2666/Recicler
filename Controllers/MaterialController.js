@@ -21,7 +21,9 @@ module.exports.get = async (req, res, next) => {
       },
       
     });
-      response.Message='ojete'
+
+
+      console.log(materials)
       response.StatusCode= materials? HttpStatus.OK : HttpStatus.NOT_FOUND;
       response.Message = materials ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
       response.Data=materials;
@@ -59,3 +61,80 @@ module.exports.getById = async (req, res, next) => {
       res.json(response);
   }   
 };
+
+module.exports.create= async (req,res,next)=>{
+  try {
+    let requestMaterial= req.body;
+    const material= await prisma.material.create({
+      data:{
+        Name : requestMaterial.Name,
+        Description: requestMaterial.Description,
+        Image: requestMaterial.Image,
+        Color: requestMaterial.Color,
+        Unit: requestMaterial.Unit,
+        Price: requestMaterial.Price,
+        RecicleCenter:{
+          connect: { Id: parseInt(requestMaterial.Center) } // Usar un objeto para conectar
+        }
+      }
+    })
+    response.StatusCode= requestMaterial? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = requestMaterial ? 'Material creado' : 'Material no creado';
+    response.Data=requestMaterial;
+
+} catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+} finally {
+    res.json(response);
+}   
+};
+
+module.exports.update = async (req, res, next) => {
+  try {
+    let material = req.body;
+    let idMaterial = parseInt(req.params.Id);
+
+    const olM = await prisma.material.findUnique({
+      where: { Id: idMaterial },
+      include: {
+        RecicleCenter: {
+          select: {
+            Id: true,
+          },
+        },
+      },
+    });
+
+    const updatedMaterial = await prisma.material.update({
+      where: {
+        Id: idMaterial,
+      },
+      data: {
+        Name: material.Name,
+        Description: material.Description,
+        Image: material.Image,
+        Color: material.Color,
+        Unit: material.Unit,
+        Price: material.Price,
+        RecicleCenter: {
+          disconnect: olM.RecicleCenter,
+          connect: material.Center.map(c => ({ Id: c.Id })),
+        },
+      },
+    });
+
+    response.StatusCode = updatedMaterial ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = updatedMaterial ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data = updatedMaterial;
+  } catch (error) {
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+  } finally {
+    res.json(response);
+  }
+};
+
+
