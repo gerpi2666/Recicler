@@ -41,14 +41,101 @@ module.exports.getById = async (req, res, next) => {
     const recicleCenter = await prisma.recicleCenter.findUnique({
       where: { Id: id },
       include: {
-        RecicleCenter: true,
+        User:true,
         Materials: true
-    },
+      },
     });
 
     response.StatusCode= recicleCenter? HttpStatus.OK : HttpStatus.NOT_FOUND;
     response.Message = recicleCenter ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
     response.Data=recicleCenter;
+
+  } catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+  } finally {
+    res.json(response);
+  }   
+};
+
+module.exports.create= async (req,res,next)=>{
+  try {
+    let center= req.body;
+
+    const Center= await prisma.recicleCenter.create({
+      data:{
+        Name : center.Name,
+        Provincia : center.Provincia,
+        Canton : center.Canton,
+        Distrito : center.Distrito,
+        Numero : center.Numero,
+        Email : center.Email,
+        Schecudale : center.Schecudale,
+        UserAdmin : center.UserAdmin,
+        Enabled : center.Enabled,
+        User:{
+          connect: center.UserAdmin
+        }
+      }
+    })
+
+    response.StatusCode= Center? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = Center ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=Center;
+
+  } catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+  } finally {
+    res.json(response);
+  }   
+};
+
+module.exports.update= async(req,res,next)=>{
+  try {
+    
+    let center = req.body;
+    let idCenter = parseInt(req.params.Id);
+
+    const olC= await prisma.recicleCenter.findUnique({
+      where:{ Id: idCenter},
+      include: {
+        User:true,
+        Materials: true
+      },
+    })
+
+    const Center= await prisma.recicleCenter.update({
+      where:{Id: idCenter},
+      data:{
+        Name :center.Name ,
+        Provincia :center.Provincia ,
+        Canton :center.Canton ,
+        Distrito :center.Distrito ,
+        Numero :center.Numero ,
+        Email :center.Email ,
+        Schecudale: center.Schecudale ,
+        UserAdmin :center.UserAdmin ,    
+        Enabled :center.Enabled ,
+        Materials:{
+          disconnect: olC.Materials,
+          connect: center.Materials.map(c => ({ Id: c.Id })),
+        },
+        User:{
+          disconnect:olC.User,
+          connect: center.UserAdmin
+        }
+
+      },
+    })
+
+    response.StatusCode= Center? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = Center ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=Center;
 
   } catch (error) {
 

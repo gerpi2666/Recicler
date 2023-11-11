@@ -74,7 +74,7 @@ module.exports.create= async (req,res,next)=>{
         Unit: requestMaterial.Unit,
         Price: requestMaterial.Price,
         RecicleCenter:{
-          connect: { Id: parseInt(requestMaterial.Center) } // Usar un objeto para conectar
+          connect: material.Center.map(c => ({ Id: c.Id }))// Usar un objeto para conectar
         }
       }
     })
