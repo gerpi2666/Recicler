@@ -40,9 +40,15 @@ module.exports.getById = async (req, res, next) => {
     const orden = await prisma.orden.findUnique({
       where: { Id: id },
       include: {
+        User:true,
         RecicleCenter: true,
-        Materials: true
+        Materials: true,
+        OrdenDetail: true
     },
     });
     res.json(orden);
+};
+
+module.exports.create=async (req,res,next)=>{
+
 };

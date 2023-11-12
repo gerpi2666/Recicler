@@ -5,5 +5,6 @@ const ordenController=require('../Controllers/OrdenController')
 
 router.get('/',ordenController.get)
 router.get("/:Id",ordenController.getById)
+router.post("/",ordenController.create)
 
 module.exports=router
