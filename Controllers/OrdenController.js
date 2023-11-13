@@ -92,3 +92,35 @@ module.exports.getByCenter=async(req, res,next)=>{
     res.json(response);
   }   
 }
+
+module.exports.getByUser=async(req, res, next)=>{
+try {
+  let user = parseInt(req.params.Id);
+  const ordenes = await prisma.orden.findMany({
+    where:{
+      IdUser: user,
+    },
+    include:{
+      User:true,
+      RecicleCenter: true,
+      OrdenDetail: {
+        include: {
+          Material: true,
+        },
+      },
+    }
+  });
+
+  response.StatusCode= ordenes? HttpStatus.OK : HttpStatus.NOT_FOUND;
+  response.Message = ordenes ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+  response.Data=ordenes;
+
+} catch (error) {
+
+  response.StatusCode = HttpStatus.SERVER_ERROR;
+  response.Message = `Error del servidor:\n${error.message}`;
+
+} finally {
+  res.json(response);
+}  
+}
