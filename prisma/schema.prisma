@@ -17,7 +17,7 @@ model User{
   Id Int @id @default(autoincrement())
   Identification String @unique
   Email String @unique
-  IdRol Int @unique
+  IdRol Int 
   Name String?
   Number String
   Direccion String
