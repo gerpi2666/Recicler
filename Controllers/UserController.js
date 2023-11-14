@@ -58,5 +58,29 @@ module.exports.getById = async (req, res, next) => {
       res.json(response);
   }
 
-
 };
+
+module.exports.getClients=async (req,res,next)=>{
+  try {
+    const users = await prisma.user.findMany({
+      where:{
+        IdRol:2
+      },
+      orderBy: {
+        Id: 'asc',
+      }
+    });
+
+    response.StatusCode= users? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = users ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=users;
+
+  } catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+  } finally {
+    res.json(response);
+  }
+}
