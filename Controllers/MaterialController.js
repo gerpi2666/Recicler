@@ -74,13 +74,13 @@ module.exports.create= async (req,res,next)=>{
         Unit: requestMaterial.Unit,
         Price: requestMaterial.Price,
         RecicleCenter:{
-          connect: material.Center.map(c => ({ Id: c.Id }))// Usar un objeto para conectar
+          connect: requestMaterial.Center.map(c => ({ Id: c.Id }))// Usar un objeto para conectar
         }
       }
     })
     response.StatusCode= requestMaterial? HttpStatus.OK : HttpStatus.NOT_FOUND;
     response.Message = requestMaterial ? 'Material creado' : 'Material no creado';
-    response.Data=requestMaterial;
+    response.Data=material;
 
 } catch (error) {
 

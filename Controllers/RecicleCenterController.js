@@ -4,13 +4,14 @@
 
 //#region Requires
 const { PrismaClient, Prisma } = require('@prisma/client');
-const {ResponseModel}=require('../Models/GenericModels');
+const {ResponseModel,Direccion}=require('../Models/GenericModels');
 const {HttpStatus}= require('../Models/Enums')
 //#endregion
 
 //#region Intancias
 const prisma = new PrismaClient();
 const response= new ResponseModel();
+
 //#endregion
 
 module.exports.get = async (req, res, next) => {
@@ -77,6 +78,9 @@ module.exports.create= async (req,res,next)=>{
         Enabled : center.Enabled,
         User:{
           connect: center.UserAdmin
+        },
+        Materials:{
+          connect:center.Materials
         }
       }
     })
@@ -101,6 +105,7 @@ module.exports.update= async(req,res,next)=>{
     let center = req.body;
     let idCenter = parseInt(req.params.Id);
 
+
     const olC= await prisma.recicleCenter.findUnique({
       where:{ Id: idCenter},
       include: {
@@ -108,6 +113,8 @@ module.exports.update= async(req,res,next)=>{
         Materials: true
       },
     })
+    console.log('Postam',center)
+    console.log('Materiales viejos',olC.Materials)
 
     const Center= await prisma.recicleCenter.update({
       where:{Id: idCenter},
@@ -119,23 +126,23 @@ module.exports.update= async(req,res,next)=>{
         Numero :center.Numero ,
         Email :center.Email ,
         Schecudale: center.Schecudale ,
-        UserAdmin :center.UserAdmin ,    
         Enabled :center.Enabled ,
         Materials:{
-          disconnect: olC.Materials,
-          connect: center.Materials.map(c => ({ Id: c.Id })),
+          disconnect: olC.Materials.map((material) => ({ Id: parseInt(material.Id) })),
+          connect: center.Materials.map((material) => ({ Id: parseInt(material.Id) }))
         },
         User:{
-          disconnect:olC.User,
-          connect: center.UserAdmin
-        }
+          // Disconnect old user
+          connect: { Id: center.UserAdmin }
+        },
+        
 
       },
     })
 
     response.StatusCode= Center? HttpStatus.OK : HttpStatus.NOT_FOUND;
     response.Message = Center ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
-    response.Data=Center;
+    response.Data=center;
 
   } catch (error) {
 
@@ -146,3 +153,4 @@ module.exports.update= async(req,res,next)=>{
     res.json(response);
   }   
 };
+

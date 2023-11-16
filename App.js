@@ -13,6 +13,7 @@ const ordenRoute=require('./Routes/OrdenRoutes')
 const recicleRoute= require('./Routes/RecicleCenterRoute')
 const walletRoute=require('./Routes/WalletRoutes')
 const cupoRoute=require('./Routes/CuponRoutes')
+const imageRoute=require('./Routes/ImageRoutes')
 
 const port=process.env.PORT || 3000;
 
@@ -35,6 +36,7 @@ app.use('/orden/',ordenRoute)
 app.use('/center/',recicleRoute)
 app.use('/wallet/',walletRoute)
 app.use('/cupon/',cupoRoute)
+app.use('/img/', imageRoute)
 
 //Server
 app.listen(port,()=>{

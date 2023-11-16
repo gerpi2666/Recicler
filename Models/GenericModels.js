@@ -6,4 +6,11 @@
     }
   }
 
-module.exports = { ResponseModel };
+  class Direccion{
+    constructor() {
+      this.Id = '';
+      this.Name = '';
+    }
+  }
+
+module.exports = { ResponseModel,Direccion };

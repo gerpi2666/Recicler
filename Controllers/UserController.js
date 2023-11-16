@@ -60,6 +60,29 @@ module.exports.getById = async (req, res, next) => {
 
 };
 
+module.exports.getUserWithoutCenter=async (req,res,next)=>{
+  try {
+    const users=await prisma.user.findMany({
+      where: {
+        IdRol: 3, // Filtrar por el rol 3
+        RecicleCenter: { none: {} }, // Usuarios sin centro de acopio asignado
+      },
+    })
+
+    response.StatusCode= users? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = users ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=users;
+
+  } catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+  } finally {
+    res.json(response);
+  }
+}
+
 module.exports.getClients=async (req,res,next)=>{
   try {
     const users = await prisma.user.findMany({
