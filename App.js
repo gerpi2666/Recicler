@@ -14,6 +14,7 @@ const recicleRoute= require('./Routes/RecicleCenterRoute')
 const walletRoute=require('./Routes/WalletRoutes')
 const cupoRoute=require('./Routes/CuponRoutes')
 const imageRoute=require('./Routes/ImageRoutes')
+const detailRoute=require('./Routes/DetailRoutes')
 
 const port=process.env.PORT || 3000;
 
@@ -37,6 +38,7 @@ app.use('/center/',recicleRoute)
 app.use('/wallet/',walletRoute)
 app.use('/cupon/',cupoRoute)
 app.use('/img/', imageRoute)
+app.use('/ordenDetail/',detailRoute)
 
 //Server
 app.listen(port,()=>{

@@ -42,7 +42,12 @@ module.exports.getById = async (req, res, next) => {
       where: { Id: id },
       include: {
         RecicleCenter: true,
-        User: true
+        User: true,
+        OrdenDetail: {
+          include: {
+            Material: true,
+          },
+        },
     },
 
     });
