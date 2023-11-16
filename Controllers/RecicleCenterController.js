@@ -64,7 +64,6 @@ module.exports.getById = async (req, res, next) => {
 module.exports.create= async (req,res,next)=>{
   try {
     let center= req.body;
-
     const Center= await prisma.recicleCenter.create({
       data:{
         Name : center.Name,
@@ -74,17 +73,18 @@ module.exports.create= async (req,res,next)=>{
         Numero : center.Numero,
         Email : center.Email,
         Schecudale : center.Schecudale,
-        UserAdmin : center.UserAdmin,
         Enabled : center.Enabled,
-        User:{
-          connect: center.UserAdmin
+        User: {
+          connect: { Id: center.UserAdmin },
         },
-        Materials:{
-          connect:center.Materials
-        }
+
+        // Conectar los materiales al nuevo centro de reciclaje
+        Materials: {
+          connect: center.Materials.map((material) => ({ Id: material.Id })),
+        },
       }
     })
-
+    console.log('Centro insertado',Center)
     response.StatusCode= Center? HttpStatus.OK : HttpStatus.NOT_FOUND;
     response.Message = Center ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
     response.Data=Center;
