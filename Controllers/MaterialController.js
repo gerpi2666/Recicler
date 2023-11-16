@@ -115,7 +115,7 @@ module.exports.update = async (req, res, next) => {
       data: {
         Name: material.Name,
         Description: material.Description,
-        Image: material.Image,
+       // Image: material.Image,
         Color: material.Color,
         Unit: material.Unit,
         Price: material.Price,

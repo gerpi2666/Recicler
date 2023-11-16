@@ -14,15 +14,15 @@ const storage = multer.diskStorage({
     filename: function(req,file,cb){
         //let extension=file.originalname.slice(file.originalname.lastIndexOf('.'))
 
-        const { Name, Id } = req.body;
+        const { Name} = req.body;
 
-        if (!Name || !Id) {
+        if (!Name) {
             return cb(new Error('Missing parameters in request body'), null);
         }
-
+        console.log('File pre Post',file)
         const extension = path.extname(file.originalname);
 
-        const filename = `${Id}${Name}${extension}`;
+        const filename = `${Name}${extension}`;
         cb(null,filename);
     }
 })
@@ -32,14 +32,30 @@ const upload= multer({storage:storage});
 module.exports.upload= upload.single('Image')
 
 module.exports.UploadImage= async(req,res,next)=>{
-    res.send({data:'file success'})
+    try {
+        // Verificar si se generó algún error durante la carga del archivo
+        if (req.fileValidationError) {
+          throw new Error(req.fileValidationError);
+        }
+    
+        // Verificar si el archivo no se encontró en la solicitud
+        if (!req.file) {
+          throw new Error('No file uploaded');
+        }
+    
+        // Si todo está bien, enviar una respuesta exitosa
+        res.status(200).send({ data: 'file success' });
+      } catch (error) {
+        // Manejar errores y enviar una respuesta adecuada
+        res.status(500).send({ error: error.message });
+      }
 }
 
 
 module.exports.getImage = async (req, res, next) => {
     try {
-        const { Id, Name,Ext } = req.body;
-        const fileName = `${Id}${Name}.${Ext}`;
+       // const { Name,Ext } = req.body;
+       const { fileName } = req.params;
 
         const filePath = path.join(__dirname, `../uploads/images/${fileName}`);
         

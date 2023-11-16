@@ -6,6 +6,8 @@ const cors = require("cors");
 const logger = require("morgan");
 const app = express();
 const prism = new PrismaClient();
+const bodyParser = require('body-parser');
+
 
 const userRoute=require('./Routes/UserRoutes')
 const materialRoute=require('./Routes/MaterialRoutes')
@@ -24,6 +26,9 @@ dotEnv.config();
 app.use(cors());
 
 app.use(logger("dev"))
+
+app.use(bodyParser.json({ limit: '505mb' })); // Ajusta el límite según tus necesidades
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(express.json());
 app.use(express.urlencoded({
