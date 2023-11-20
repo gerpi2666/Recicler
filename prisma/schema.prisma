@@ -18,6 +18,7 @@ model User{
   Identification String @unique
   Email String @unique
   IdRol Int 
+  IdWallet Int?
   Name String?
   Number String
   Direccion String
@@ -25,7 +26,7 @@ model User{
   Orden Orden []
   Cupon Cupon []
   RecicleCenter RecicleCenter []
-  Wallet Wallet[]
+  Wallet Wallet? @relation(fields: [IdWallet], references: [Id])
   Role Role @relation(fields: [IdRol], references: [Id])
 }
 
@@ -65,12 +66,11 @@ OrdenDetail OrdenDetail[]
 //-----------Cupons & Coins---------------------------
 model Wallet{
   Id Int @id @default(autoincrement())
-  IdUser Int
-  Token  Bytes?
+  IdUser Int @unique
   AvaibleCoins Decimal
   ChangesCoins Decimal
   RecivedCoins Decimal
-  User User @relation(fields: [IdUser],references: [Id])
+  User User []
 }
 
 model Cupon{
