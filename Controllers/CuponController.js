@@ -42,10 +42,70 @@ module.exports.getById = async (req, res, next) => {
   const cupon = await prisma.cupon.findUnique({
     where: { Id: id },
     include: {
-      RecicleCenter: true,
-      Materials: true
-  },
+      User: true,
+    },
   });
+
+    response.StatusCode= cupon? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = cupon ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=cupon;
+
+ } catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+ } finally {
+    res.json(response);
+ }   
+};
+
+module.exports.change=async (req, res, next)=>{
+  try {
+    const {IdCupon, IdUser}= req.body
+
+    //busca el cupon a cambiar
+    const cuponToChange= await prisma.cupon.findUnique({
+      where:{
+        Id: IdCupon
+      },
+      include:{
+        User:true,
+      }
+    })
+
+    //actualiza el cupon
+    const cupon= await prisma.cupon.update({
+      where:{Id: IdCupon},
+      data:{
+        Estado: true,
+        User:{
+          connect: IdUser,
+        }
+
+      }
+    })
+
+    //busca el wallet a actualizar
+    const wallertToChange= await prisma.wallet.findUnique({
+      where:{
+        IdUser: IdUser,
+        include:{
+          User: true
+        }
+      }
+    })
+
+    //actualiza los campos del wallet de la transaccion
+    const wallet = await prisma.wallet.update({
+      where:{
+        IdUser:IdUser
+      },
+      data:{
+        AvaibleCoins: wallertToChange.AvaibleCoins-cupon.Price,
+        ChangesCoins: wallertToChange.ChangesCoins+cupon.Price
+      }
+    })
 
     response.StatusCode= cupon? HttpStatus.OK : HttpStatus.NOT_FOUND;
     response.Message = cupon ? 'Informacion retornada correctamente' : 'Informacion no encontrada';

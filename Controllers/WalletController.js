@@ -44,8 +44,7 @@ module.exports.get = async (req, res, next) => {
         where: { Id: id },
           include: {
             User: true,
-            Role: true,
-            RecicleCenter:true
+            
           },
       });
     
