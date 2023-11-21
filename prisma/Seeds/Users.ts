@@ -151,6 +151,4 @@ const createUsers = async () =>{
   ];
 }
 
-
-
 export const Users=createUsers()

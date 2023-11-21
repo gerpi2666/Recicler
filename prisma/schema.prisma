@@ -24,7 +24,7 @@ model User{
   Direccion String
   Password String? // Cambia de Buffer a String
   Orden Orden []
-  Cupon Cupon []
+  Cupon Cupon[]
   RecicleCenter RecicleCenter []
   Wallet Wallet? @relation(fields: [IdWallet], references: [Id])
   Role Role @relation(fields: [IdRol], references: [Id])
@@ -74,14 +74,14 @@ model Wallet{
 
 model Cupon{
 Id Int @id @default(autoincrement())
-IdUser Int
+IdUser Int?
 Description String
 Image Bytes?
 ValiteDate DateTime
 Price Decimal
 Estado Boolean
 Category Category[]
-User User @relation(fields: [IdUser],references: [Id])
+User User? @relation(fields: [IdUser], references: [Id])
 }
 
 model Category{
