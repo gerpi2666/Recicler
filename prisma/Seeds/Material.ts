@@ -28,14 +28,14 @@ export const Materials = [
     Price: 5.0,
   },
   {
-    Name: "Botellas plasticas",
+    Name: "Botellas",
     Description: "Botellas listas para reciclar",
     Color: "#87CEEB",
     Unit: "kg",
     Price: 5.0,
   },
   {
-    Name: "Goma de poliuretano",
+    Name: "Poliuretano",
     Description: "Listo para crear formados",
     Color: "#B0E0E6",
     Unit: "L",
