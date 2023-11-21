@@ -22,7 +22,7 @@ const Materials = [
     Image: null,
     Color: "#A52A2A",
     Unit: "L",
-    Price: "20",
+    Price: "15",
   },
   {
     Name: "Papel",
@@ -30,7 +30,7 @@ const Materials = [
     Image: null,
     Color: "#FFD700",
     Unit: "L",
-    Price: "20",
+    Price: "5",
   },
   {
     Name: "Botellas plasticas",
@@ -38,7 +38,7 @@ const Materials = [
     Image: null,
     Color: "#87CEEB",
     Unit: "kg",
-    Price: "20",
+    Price: "5",
   },
   {
     Name: "Goma de poliuretano",
@@ -46,7 +46,7 @@ const Materials = [
     Image: null,
     Color: "#B0E0E60",
     Unit: "L",
-    Price: "20",
+    Price: "5",
   },
   {
     Name: "Aserrin",
@@ -54,7 +54,7 @@ const Materials = [
     Image: null,
     Color: "#6D5843",
     Unit: "kg",
-    Price: "20",
+    Price: "7",
   },
   {
     Name: "Comida",
@@ -62,6 +62,8 @@ const Materials = [
     Image: null,
     Color: "#32CD32",
     Unit: "kg",
-    Price: "20",
+    Price: "3",
   }
 ];
+
+module.exports={Materials}

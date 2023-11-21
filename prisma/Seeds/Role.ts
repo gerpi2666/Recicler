@@ -1,4 +1,4 @@
- const Role = [
+ const Roles = [
   {
     Name: "Administrador",
   },
@@ -10,4 +10,4 @@
   },
 ];
 
-module.exports={Role}
+module.exports={Roles}
