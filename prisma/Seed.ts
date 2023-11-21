@@ -1,31 +1,37 @@
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
 
-const {Roles} = require('./Seeds/Role')
-const {Users} = require('./Seeds/Users')
-const {Centers}= require('./Seeds/Center')
-const {Materials} = require('./Seeds/Material')
+import {Centers} from './Seeds/Center'
+import { Roles } from './Seeds/Role'
+import {Users} from './Seeds/Users'
+import{Materials} from './Seeds/Material'
+import {Categorys} from './Seeds/Category'
 
 const prisma = new PrismaClient();
 
 async function seed() {
 
-  const role = await prisma.role.create({
+   await prisma.role.createMany({
     data: Roles
   });
 
-  const user = await prisma.user.create({
-    data: Users
+  await prisma.category.createMany({
+    data:Categorys
+  })
+  await prisma.user.createMany({
+    data: await Users
   });
 
-  const recicleCenter = await prisma.recicleCenter.create({
+   await prisma.recicleCenter.createMany({
     data: Centers
   });
 
+
+  
   // Crear un material de ejemplo
-  const material = await prisma.material.create({
+  await prisma.material.createMany({
     data: Materials
-  });
+
+  }); 
 
 
 
@@ -34,9 +40,11 @@ async function seed() {
 
 // Ejecutar la función de seed
 seed()
-  .catch((error) => {
-    console.error('Error al crear seeds:', error);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+.then(async()=>{
+  await prisma.$disconnect();
+})
+.catch(async e=>{
+  console.error(e);
+  await prisma.$disconnect();
+  process.exit(1);
+})

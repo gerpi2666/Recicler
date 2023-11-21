@@ -1,4 +1,4 @@
-const Categorys = [
+export const Categorys = [
   {
     Name: "Salud",
   },
@@ -10,4 +10,3 @@ const Categorys = [
   }
 ];
 
-module.exports={Categorys}

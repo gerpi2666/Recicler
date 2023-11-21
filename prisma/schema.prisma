@@ -22,7 +22,7 @@ model User{
   Name String?
   Number String
   Direccion String
-  Password Bytes?
+  Password String? // Cambia de Buffer a String
   Orden Orden []
   Cupon Cupon []
   RecicleCenter RecicleCenter []
@@ -54,12 +54,11 @@ model RecicleCenter{
 
 model Material{
 Id Int @id @default(autoincrement())
-Name String
-Description String
-Image Bytes? 
-Color String
-Unit  String
-Price Decimal
+Name String?
+Description String?
+Color String?
+Unit  String?
+Price Decimal?
 RecicleCenter RecicleCenter[]
 OrdenDetail OrdenDetail[]
 }

@@ -1,4 +1,4 @@
-const Centers = [
+export const Centers = [
   {
     Name: "Hermita Guayabo",
     Provincia: "Guanacaste",
@@ -34,4 +34,3 @@ const Centers = [
   },
 ];
 
-module.exports = { Centers };
