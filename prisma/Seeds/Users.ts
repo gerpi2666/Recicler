@@ -9,6 +9,7 @@ const hashPassword = async (password:any) => {
 const createUsers = async () =>{
   return[
     {
+      IdWallet:1,
       Email: "admin@prueba.com",
       Name: "Gerald Picado",
       Number: "86911434",
@@ -18,6 +19,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:2,
       Email: "admin2@prueba.com",
       Name: "Lauren Ortiz",
       Number: "71881697",
@@ -27,6 +29,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:3,
       Email: "cliente@prueba.com",
       Name: "Lucía García",
       Number: "87651234",
@@ -36,6 +39,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:4,
       Email: "cliente1@prueba.com",
       Name: "Mateo Rodríguez",
       Number: "86712345",
@@ -45,6 +49,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:5,
       Email: "cliente2@prueba.com",
       Name: "Valentina López",
       Number: "78651234",
@@ -54,6 +59,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:6,
       Email: "cliente3@prueba.com",
       Name: "Santiago Martínez",
       Number: "86745123",
@@ -63,6 +69,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:7,
       Email: "cliente4@prueba.com",
       Name: "Camila Pérez",
       Number: "87612345",
@@ -72,6 +79,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:8,
       Email: "centerAdmin1@prueba.com",
       Name: "Sebastián Gómez",
       Number: "76543128",
@@ -81,6 +89,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:9,
       Email: "centerAdmin2@prueba.com",
       Name: "Isabella Hernández",
       Number: "87651243",
@@ -90,6 +99,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:10,
       Email: "centerAdmin3@prueba.com",
       Name: "Diego Sánchez",
       Number: "76581234",
@@ -99,6 +109,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:11,
       Email: "centerAdmin4@prueba.com",
       Name: "Sofía González",
       Number: "68712345",
@@ -108,6 +119,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:12,
       Email: "centerAdmin5@prueba.com",
       Name: "Nicolás Ramírez",
       Number: "87651238",
@@ -117,6 +129,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:13,
       Email: "centerAdmin6@prueba.com",
       Name: "Emma Díaz",
       Number: "78651243",
@@ -126,6 +139,7 @@ const createUsers = async () =>{
       Password: await hashPassword("123456"), // Reemplaza con una contraseña hash real
     },
     {
+      IdWallet:14,
       Email: "centerAdmin7@prueba.com",
       Name: "Alejandro Castro",
       Number: "86751234",
