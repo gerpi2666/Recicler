@@ -1,18 +1,23 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function seed() {
+
+  const saltRounds = 10;
+
+  
   // Crear un usuario de ejemplo
   const user = await prisma.user.create({
     data: {
       Email: 'admin@prueba.com',
-      Name: 'Lg',
-      Number: '88387319',
-      Direccion: 'Dirección de ejemplo',
-      Identification: 'ID123',
+      Name: 'Gerald Picado',
+      Number: '86911434',
+      Direccion: '400m este de chelips',
+      Identification: '117870605',
       IdRol: 1,
-      Password: '123456', // Reemplaza con una contraseña hash real
+      Password: await bcrypt.hash('123456', saltRounds), // Reemplaza con una contraseña hash real
     },
   });
 
