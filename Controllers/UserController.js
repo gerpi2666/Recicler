@@ -143,7 +143,7 @@ module.exports.login = async (request, response, next) => {
     const payload={
       id: user.Id,
       email: user.Email,
-      role: user.Id
+      role: user.Role.Name
     }
     //Crear el token
     const token= jwt.sign(payload,process.env.SECRET_KEY,{
