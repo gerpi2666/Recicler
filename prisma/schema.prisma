@@ -45,7 +45,7 @@ model RecicleCenter{
   Numero String
   Email String
   Schecudale String
-  UserAdmin Int
+  UserAdmin Int @unique
   Enabled Boolean
   User User @relation(fields: [UserAdmin],references: [Id])
   Materials Material[]
