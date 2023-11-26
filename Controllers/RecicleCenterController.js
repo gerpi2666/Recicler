@@ -4,13 +4,14 @@
 
 //#region Requires
 const { PrismaClient, Prisma } = require('@prisma/client');
-const {ResponseModel}=require('../Models/GenericModels');
+const {ResponseModel,Direccion}=require('../Models/GenericModels');
 const {HttpStatus}= require('../Models/Enums')
 //#endregion
 
 //#region Intancias
 const prisma = new PrismaClient();
 const response= new ResponseModel();
+
 //#endregion
 
 module.exports.get = async (req, res, next) => {
@@ -60,10 +61,35 @@ module.exports.getById = async (req, res, next) => {
   }   
 };
 
+module.exports.getByUser = async (req, res, next) => {
+  try {
+    let id = parseInt(req.params.Id);
+    const recicleCenter = await prisma.recicleCenter.findUnique({
+      where: { UserAdmin: id },
+      include: {
+        User:true,
+        Materials: true
+      },
+    });
+
+    response.StatusCode= recicleCenter? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = recicleCenter ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=recicleCenter;
+
+  } catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+  } finally {
+    res.json(response);
+  }   
+};
+
+
 module.exports.create= async (req,res,next)=>{
   try {
     let center= req.body;
-
     const Center= await prisma.recicleCenter.create({
       data:{
         Name : center.Name,
@@ -73,14 +99,18 @@ module.exports.create= async (req,res,next)=>{
         Numero : center.Numero,
         Email : center.Email,
         Schecudale : center.Schecudale,
-        UserAdmin : center.UserAdmin,
         Enabled : center.Enabled,
-        User:{
-          connect: center.UserAdmin
-        }
+        User: {
+          connect: { Id: center.UserAdmin },
+        },
+
+        // Conectar los materiales al nuevo centro de reciclaje
+        Materials: {
+          connect: center.Materials.map((material) => ({ Id: material.Id })),
+        },
       }
     })
-
+    console.log('Centro insertado',Center)
     response.StatusCode= Center? HttpStatus.OK : HttpStatus.NOT_FOUND;
     response.Message = Center ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
     response.Data=Center;
@@ -101,6 +131,7 @@ module.exports.update= async(req,res,next)=>{
     let center = req.body;
     let idCenter = parseInt(req.params.Id);
 
+
     const olC= await prisma.recicleCenter.findUnique({
       where:{ Id: idCenter},
       include: {
@@ -108,6 +139,8 @@ module.exports.update= async(req,res,next)=>{
         Materials: true
       },
     })
+    console.log('Postam',center)
+    console.log('Materiales viejos',olC.Materials)
 
     const Center= await prisma.recicleCenter.update({
       where:{Id: idCenter},
@@ -119,23 +152,23 @@ module.exports.update= async(req,res,next)=>{
         Numero :center.Numero ,
         Email :center.Email ,
         Schecudale: center.Schecudale ,
-        UserAdmin :center.UserAdmin ,    
         Enabled :center.Enabled ,
         Materials:{
-          disconnect: olC.Materials,
-          connect: center.Materials.map(c => ({ Id: c.Id })),
+          disconnect: olC.Materials.map((material) => ({ Id: parseInt(material.Id) })),
+          connect: center.Materials.map((material) => ({ Id: parseInt(material.Id) }))
         },
         User:{
-          disconnect:olC.User,
-          connect: center.UserAdmin
-        }
+          // Disconnect old user
+          connect: { Id: center.UserAdmin }
+        },
+        
 
       },
     })
 
     response.StatusCode= Center? HttpStatus.OK : HttpStatus.NOT_FOUND;
     response.Message = Center ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
-    response.Data=Center;
+    response.Data=center;
 
   } catch (error) {
 
@@ -146,3 +179,4 @@ module.exports.update= async(req,res,next)=>{
     res.json(response);
   }   
 };
+

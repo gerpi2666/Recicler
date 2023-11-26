@@ -4,14 +4,14 @@ CREATE TABLE `User` (
     `Identification` VARCHAR(191) NOT NULL,
     `Email` VARCHAR(191) NOT NULL,
     `IdRol` INTEGER NOT NULL,
+    `IdWallet` INTEGER NULL,
     `Name` VARCHAR(191) NULL,
     `Number` VARCHAR(191) NOT NULL,
     `Direccion` VARCHAR(191) NOT NULL,
-    `Password` LONGBLOB NULL,
+    `Password` VARCHAR(191) NULL,
 
     UNIQUE INDEX `User_Identification_key`(`Identification`),
     UNIQUE INDEX `User_Email_key`(`Email`),
-    UNIQUE INDEX `User_IdRol_key`(`IdRol`),
     PRIMARY KEY (`Id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -42,12 +42,11 @@ CREATE TABLE `RecicleCenter` (
 -- CreateTable
 CREATE TABLE `Material` (
     `Id` INTEGER NOT NULL AUTO_INCREMENT,
-    `Name` VARCHAR(191) NOT NULL,
-    `Description` VARCHAR(191) NOT NULL,
-    `Image` LONGBLOB NULL,
-    `Color` VARCHAR(191) NOT NULL,
-    `Unit` VARCHAR(191) NOT NULL,
-    `Price` DECIMAL(65, 30) NOT NULL,
+    `Name` VARCHAR(191) NULL,
+    `Description` VARCHAR(191) NULL,
+    `Color` VARCHAR(191) NULL,
+    `Unit` VARCHAR(191) NULL,
+    `Price` DECIMAL(65, 30) NULL,
 
     PRIMARY KEY (`Id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -56,18 +55,18 @@ CREATE TABLE `Material` (
 CREATE TABLE `Wallet` (
     `Id` INTEGER NOT NULL AUTO_INCREMENT,
     `IdUser` INTEGER NOT NULL,
-    `Token` LONGBLOB NULL,
     `AvaibleCoins` DECIMAL(65, 30) NOT NULL,
     `ChangesCoins` DECIMAL(65, 30) NOT NULL,
     `RecivedCoins` DECIMAL(65, 30) NOT NULL,
 
+    UNIQUE INDEX `Wallet_IdUser_key`(`IdUser`),
     PRIMARY KEY (`Id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Cupon` (
     `Id` INTEGER NOT NULL AUTO_INCREMENT,
-    `IdUser` INTEGER NOT NULL,
+    `IdUser` INTEGER NULL,
     `Description` VARCHAR(191) NOT NULL,
     `Image` LONGBLOB NULL,
     `ValiteDate` DATETIME(3) NOT NULL,
@@ -125,16 +124,16 @@ CREATE TABLE `_CategoryToCupon` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_IdWallet_fkey` FOREIGN KEY (`IdWallet`) REFERENCES `Wallet`(`Id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_IdRol_fkey` FOREIGN KEY (`IdRol`) REFERENCES `Role`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `RecicleCenter` ADD CONSTRAINT `RecicleCenter_UserAdmin_fkey` FOREIGN KEY (`UserAdmin`) REFERENCES `User`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Wallet` ADD CONSTRAINT `Wallet_IdUser_fkey` FOREIGN KEY (`IdUser`) REFERENCES `User`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Cupon` ADD CONSTRAINT `Cupon_IdUser_fkey` FOREIGN KEY (`IdUser`) REFERENCES `User`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Cupon` ADD CONSTRAINT `Cupon_IdUser_fkey` FOREIGN KEY (`IdUser`) REFERENCES `User`(`Id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Orden` ADD CONSTRAINT `Orden_IdUser_fkey` FOREIGN KEY (`IdUser`) REFERENCES `User`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;

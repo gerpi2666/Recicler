@@ -1,0 +1,58 @@
+export const Materials = [
+  {
+    Name: "Cobre",
+    Description: "Material Conductor de energía",
+    Color: "#FF6347",
+    Unit: "kg",
+    Price: 20.0,
+  },
+  {
+    Name: "Plomo",
+    Description: "Material tóxico usado para fijación",
+    Color: "#4682B4",
+    Unit: "kg",
+    Price: 20.0,
+  },
+  {
+    Name: "Carton",
+    Description: "Material basado en metal comprimido",
+    Color: "#A52A2A",
+    Unit: "L",
+    Price: 5.0,
+  },
+  {
+    Name: "Papel",
+    Description: "Papel listo para reciclar",
+    Color: "#FFD700",
+    Unit: "L",
+    Price: 5.0,
+  },
+  {
+    Name: "Botellas",
+    Description: "Botellas listas para reciclar",
+    Color: "#87CEEB",
+    Unit: "kg",
+    Price: 5.0,
+  },
+  {
+    Name: "Poliuretano",
+    Description: "Listo para crear formados",
+    Color: "#B0E0E6",
+    Unit: "L",
+    Price: 5.0,
+  },
+  {
+    Name: "Aserrin",
+    Description: "Listo para comprimir",
+    Color: "#6D5843",
+    Unit: "kg",
+    Price: 7.0,
+  },
+  {
+    Name: "Comida",
+    Description: "Restos de comida listos para compostaje",
+    Color: "#32CD32",
+    Unit: "kg",
+    Price: 3.0,
+  },
+];

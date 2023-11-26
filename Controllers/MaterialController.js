@@ -73,14 +73,14 @@ module.exports.create= async (req,res,next)=>{
         Color: requestMaterial.Color,
         Unit: requestMaterial.Unit,
         Price: requestMaterial.Price,
-        RecicleCenter:{
-          connect: material.Center.map(c => ({ Id: c.Id }))// Usar un objeto para conectar
-        }
+       /*  RecicleCenter:{
+          connect: requestMaterial.Center.map(c => ({ Id: c.Id }))// Usar un objeto para conectar
+        } */
       }
     })
     response.StatusCode= requestMaterial? HttpStatus.OK : HttpStatus.NOT_FOUND;
     response.Message = requestMaterial ? 'Material creado' : 'Material no creado';
-    response.Data=requestMaterial;
+    response.Data=material;
 
 } catch (error) {
 
@@ -115,7 +115,7 @@ module.exports.update = async (req, res, next) => {
       data: {
         Name: material.Name,
         Description: material.Description,
-        Image: material.Image,
+       // Image: material.Image,
         Color: material.Color,
         Unit: material.Unit,
         Price: material.Price,

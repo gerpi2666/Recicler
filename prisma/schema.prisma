@@ -17,15 +17,16 @@ model User{
   Id Int @id @default(autoincrement())
   Identification String @unique
   Email String @unique
-  IdRol Int @unique
+  IdRol Int 
+  IdWallet Int?
   Name String?
   Number String
   Direccion String
-  Password Bytes?
+  Password String? // Cambia de Buffer a String
   Orden Orden []
-  Cupon Cupon []
+  Cupon Cupon[]
   RecicleCenter RecicleCenter []
-  Wallet Wallet[]
+  Wallet Wallet? @relation(fields: [IdWallet], references: [Id])
   Role Role @relation(fields: [IdRol], references: [Id])
 }
 
@@ -44,7 +45,7 @@ model RecicleCenter{
   Numero String
   Email String
   Schecudale String
-  UserAdmin Int
+  UserAdmin Int @unique
   Enabled Boolean
   User User @relation(fields: [UserAdmin],references: [Id])
   Materials Material[]
@@ -53,36 +54,34 @@ model RecicleCenter{
 
 model Material{
 Id Int @id @default(autoincrement())
-Name String
-Description String
-Image Bytes? 
-Color String
-Unit  String
-Price Decimal
+Name String?
+Description String?
+Color String?
+Unit  String?
+Price Decimal?
 RecicleCenter RecicleCenter[]
 OrdenDetail OrdenDetail[]
 }
 //-----------Cupons & Coins---------------------------
 model Wallet{
   Id Int @id @default(autoincrement())
-  IdUser Int
-  Token  Bytes?
+  IdUser Int @unique
   AvaibleCoins Decimal
   ChangesCoins Decimal
   RecivedCoins Decimal
-  User User @relation(fields: [IdUser],references: [Id])
+  User User []
 }
 
 model Cupon{
 Id Int @id @default(autoincrement())
-IdUser Int
+IdUser Int?
 Description String
 Image Bytes?
 ValiteDate DateTime
 Price Decimal
 Estado Boolean
 Category Category[]
-User User @relation(fields: [IdUser],references: [Id])
+User User? @relation(fields: [IdUser], references: [Id])
 }
 
 model Category{

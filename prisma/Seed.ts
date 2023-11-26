@@ -1,117 +1,83 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
+
+import { Centers } from "./Seeds/Center";
+import { Roles } from "./Seeds/Role";
+import { Users } from "./Seeds/Users";
+import { Materials } from "./Seeds/Material";
+import { Categorys } from "./Seeds/Category";
+import { Cupon } from "./Seeds/Cupon";
 
 const prisma = new PrismaClient();
 
 async function seed() {
-  // Crear un usuario de ejemplo
-  const user = await prisma.user.create({
-    data: {
-      Email: 'admin@prueba.com',
-      Name: 'Lg',
-      Number: '88387319',
-      Direccion: 'Dirección de ejemplo',
-      Identification: 'ID123',
-      IdRol: 1,
-      Password: '123456', // Reemplaza con una contraseña hash real
-    },
+  await prisma.role.createMany({
+    data: Roles,
   });
 
-  // Crear un rol de ejemplo
-  const role = await prisma.role.create({
-    data: {
-      Name: 'Ejemplo de Rol',
-    },
+  await prisma.category.createMany({
+    data: Categorys,
   });
 
-  // Crear un centro de reciclaje de ejemplo
-  const recicleCenter = await prisma.recicleCenter.create({
-    data: {
-      Name: 'Pulperia San Agustin',
-      Provincia: 'Alajuela',
-      Canton: 'Alajuela',
-      Distrito: 'Guacima ',
-      Numero: '24387319',
-      Email: 'sg@example.com',
-      Schecudale: '07:00am - 3:00pm',
-      Enabled: true,
-      User: {
-        connect: {
-          Id: user.Id, // Reemplaza con el ID del usuario correspondiente
-        },
+  for (const cuponData of Cupon) {
+    await prisma.cupon.create({
+      data: {
+        Description: cuponData.Description,
+        ValiteDate: cuponData.ValiteDate,
+        Price: cuponData.Price,
+        Estado: cuponData.Estado,
+        Category: { connect: { Id: cuponData.CategoryId } },
+        
+        // Omite el campo User si no deseas asignar un usuario al crear el cupón
       },
-    },
+    });
+  }
+  
+  
+  const users = await Users;
+  for (const user of users) {
+    // Crea el usuario en la base de datos
+    await prisma.wallet.create({
+      data: {
+        IdUser: user.IdWallet, // Usa el ID del usuario recién creado
+        AvaibleCoins: 0.0,
+        ChangesCoins: 0.0,
+        RecivedCoins: 0.0,
+      },
+    });
+
+    const createdUser = await prisma.user.create({
+      data: {
+        Identification: user.Identification,
+        Email: user.Email,
+        IdRol: user.IdRol,
+        IdWallet: user.IdWallet,
+        Name: user.Name,
+        Number: user.Number,
+        Direccion: user.Direccion,
+        Password: user.Password, // Asumiendo que la contraseña ya está encriptada
+      },
+    });
+  }
+
+  await prisma.recicleCenter.createMany({
+    data: Centers,
   });
 
   // Crear un material de ejemplo
-  const material = await prisma.material.create({
-    data: {
-      Name: 'Cobre',
-      Description: 'Material conductor fundible',
-      Image: null, // Reemplaza con datos de imagen si es necesario
-      Color: 'Cafe',
-      Unit: 'kg',
-      Price: 10.99,
-    },
+  await prisma.material.createMany({
+    data: Materials,
   });
 
-  // Crear una billetera (wallet) de ejemplo
-  const wallet = await prisma.wallet.create({
-    data: {
-      IdUser: user.Id,
-      Token: null, // Reemplaza con datos de token si es necesario
-      AvaibleCoins: 100.0,
-      ChangesCoins: 50.0,
-      RecivedCoins: 25.0,
-    },
-  });
-
-  // Crear un cupón de ejemplo
-  const cupon = await prisma.cupon.create({
-    data: {
-      IdUser: user.Id,
-      Description: '3 noches en barcelo',
-      Image: null, // Reemplaza con datos de imagen si es necesario
-      ValiteDate: new Date('2023-12-31'),
-      Price: 5.0,
-      Estado: true,
-    },
-  });
-
-  // Crear una categoría de ejemplo
-  const category = await prisma.category.create({
-    data: {
-      Name: 'Categoría de Ejemplo',
-    },
-  });
-
-  // Crear una orden de ejemplo
-  const orden = await prisma.orden.create({
-    data: {
-      IdUser: user.Id,
-      IdCenter: recicleCenter.Id,
-      Date: new Date(),
-      Total: 0
-    },
-  });
-
-  // Crear un detalle de orden de ejemplo
-  const ordenDetail = await prisma.ordenDetail.create({
-    data: {
-      OrdenId: orden.Id,
-      MaterialId: material.Id,
-      Cantidad: 2,
-      Subtotal:0,
-    },
-  });
-
-  console.log('Seeds creados exitosamente.');
+  console.log("Seeds creados exitosamente.");
 }
 
 // Ejecutar la función de seed
 seed()
-  .catch((error) => {
-    console.error('Error al crear seeds:', error);
-  })
-  .finally(async () => {
+  .then(async () => {
     await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
   });
