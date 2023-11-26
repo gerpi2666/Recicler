@@ -6,6 +6,9 @@
 const { PrismaClient, Prisma } = require('@prisma/client');
 const {ResponseModel}=require('../Models/GenericModels');
 const {HttpStatus}= require('../Models/Enums')
+const jwt = require("jsonwebtoken");
+//npm install bcrypt
+const bcrypt = require("bcrypt");
 //#endregion
 
 //#region Intancias
@@ -111,3 +114,48 @@ module.exports.getClients=async (req,res,next)=>{
     res.json(response);
   }
 }
+
+module.exports.login = async (request, response, next) => {
+  let userReq = request.body;
+  //Buscar el usuario según el email dado
+  const user = await prisma.Usuario.findUnique({
+    where: {
+      email: userReq.email,
+    },
+  });
+  //Sino lo encuentra según su email
+  if (!user) {
+    response.status(401).send({
+      success: false,
+      message: "Usuario no registrado",
+    });
+  }
+  //Verifica la contraseña
+  const checkPassword=await bcrypt.compare(userReq.password, user.password);
+  if(checkPassword === false){
+    response.status(401).send({
+      success:false,
+      message: "Credenciales no validas"
+    })
+  }else{
+    //Usuario correcto
+    //Crear el payload
+    const payload={
+      id: user.Id,
+      email: user.Email,
+      role: user.Id
+    }
+    //Crear el token
+    const token= jwt.sign(payload,process.env.SECRET_KEY,{
+      expiresIn: process.env.JWT_EXPIRE
+    });
+    response.json({
+      success: true,
+      message: "Usuario registrado",
+      token,
+        
+    })
+  }
+};
+
+
