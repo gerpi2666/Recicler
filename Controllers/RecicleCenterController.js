@@ -61,6 +61,32 @@ module.exports.getById = async (req, res, next) => {
   }   
 };
 
+module.exports.getByUser = async (req, res, next) => {
+  try {
+    let id = parseInt(req.params.Id);
+    const recicleCenter = await prisma.recicleCenter.findUnique({
+      where: { UserAdmin: id },
+      include: {
+        User:true,
+        Materials: true
+      },
+    });
+
+    response.StatusCode= recicleCenter? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = recicleCenter ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=recicleCenter;
+
+  } catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+  } finally {
+    res.json(response);
+  }   
+};
+
+
 module.exports.create= async (req,res,next)=>{
   try {
     let center= req.body;

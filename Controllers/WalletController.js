@@ -37,7 +37,7 @@ module.exports.get = async (req, res, next) => {
     
 };
 
-  module.exports.getById = async (req, res, next) => {
+module.exports.getById = async (req, res, next) => {
     try {
         let id = parseInt(req.params.Id);
         const wallet = await prisma.wallet.findUnique({
@@ -60,5 +60,5 @@ module.exports.get = async (req, res, next) => {
   } finally {
     res.json(response);
   }
-  };
+};
  
