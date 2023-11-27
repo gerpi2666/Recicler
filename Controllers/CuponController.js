@@ -74,7 +74,11 @@ module.exports.change=async (req, res, next)=>{
       }
     })
 
+    
+
     //actualiza el cupon
+
+
     const cupon= await prisma.cupon.update({
       where:{Id: IdCupon},
       data:{
@@ -87,14 +91,7 @@ module.exports.change=async (req, res, next)=>{
     })
 
     //busca el wallet a actualizar
-    const wallertToChange= await prisma.wallet.findUnique({
-      where:{
-        IdUser: IdUser,
-        include:{
-          User: true
-        }
-      }
-    })
+    
 
     //actualiza los campos del wallet de la transaccion
     const wallet = await prisma.wallet.update({
@@ -120,3 +117,22 @@ module.exports.change=async (req, res, next)=>{
     res.json(response);
  }   
 };
+
+module.exports.create= async (req,res,next)=>{
+  try {
+    
+    
+
+    response.StatusCode= requestMaterial? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = requestMaterial ? 'Material creado' : 'Material no creado';
+    response.Data=material;
+
+} catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+} finally {
+    res.json(response);
+}   
+}

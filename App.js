@@ -17,7 +17,7 @@ const walletRoute=require('./Routes/WalletRoutes')
 const cupoRoute=require('./Routes/CuponRoutes')
 const imageRoute=require('./Routes/ImageRoutes')
 const detailRoute=require('./Routes/DetailRoutes')
-
+const categoryRoute=require('./Routes/CategoryRoutes')
 const port=process.env.PORT || 3000;
 
 dotEnv.config();
@@ -44,6 +44,7 @@ app.use('/wallet/',walletRoute)
 app.use('/cupon/',cupoRoute)
 app.use('/img/', imageRoute)
 app.use('/ordenDetail/',detailRoute)
+app.use('/category/',categoryRoute)
 
 //Server
 app.listen(port,()=>{
