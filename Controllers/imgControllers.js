@@ -13,17 +13,24 @@ const storage = multer.diskStorage({
     destination:'./uploads/images',
     filename: function(req,file,cb){
         //let extension=file.originalname.slice(file.originalname.lastIndexOf('.'))
+        console.log('BODY REQ',req.body)
+        const { Name,Cupon} = req.body;
 
-        const { Name} = req.body;
 
         if (!Name) {
             return cb(new Error('Missing parameters in request body'), null);
         }
         console.log('File pre Post',file)
         const extension = path.extname(file.originalname);
-
-        const filename = `${Name}${extension}`;
-        cb(null,filename);
+        console.log('VALOR cupon', Cupon)
+        if(Cupon){
+            const filename = `Cupon${Name}${extension}`;
+            cb(null,filename);
+        }else{
+            const filename = `${Name}${extension}`;
+            cb(null,filename);
+        }
+        
     }
 })
 
