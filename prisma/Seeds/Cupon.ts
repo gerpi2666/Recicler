@@ -5,7 +5,7 @@ export const Cupon = [
       ValiteDate: new Date('2023-12-31'), // Fecha de validez del cupón
       Price: 10.0, // Precio del cupón
       Estado: false, // Estado del cupón
-      CategoryId: 1, // ID de la categoría relacionada
+      CategoryId: 3, // ID de la categoría relacionada
           
 
     },
@@ -14,7 +14,7 @@ export const Cupon = [
       ValiteDate: new Date('2024-06-30'),
       Price: 20.0,
       Estado: false,
-      CategoryId: 3,
+      CategoryId: 1,
     
     },
     // ... Otros cupones
