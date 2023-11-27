@@ -54,6 +54,7 @@ async function seed() {
         Name: user.Name,
         Number: user.Number,
         Direccion: user.Direccion,
+        Enabled: user.Enabled,
         Password: user.Password, // Asumiendo que la contraseña ya está encriptada
       },
     });

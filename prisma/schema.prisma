@@ -23,6 +23,7 @@ model User{
   Number String
   Direccion String
   Password String? // Cambia de Buffer a String
+  Enabled Boolean
   Orden Orden []
   Cupon Cupon[]
   RecicleCenter RecicleCenter []

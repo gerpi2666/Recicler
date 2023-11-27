@@ -144,16 +144,28 @@ module.exports.create=async(req, res, next)=>{
         IdUser: orderReq.IdUser, 
         IdCenter: orderReq.IdCenter,
         Date: orderReq.Date,
-        Total : await getTotal(orderReq.OrdenDetail),
-        OrdenDetail:{
-          connect: orderReq.OrdenDetail
-        }
+        Total : orderReq.Total,
+        
       }
     })
 
+    const createDetailsPromises = orderReq.OrdenDetail.map(async element => {
+      return prisma.ordenDetail.create({
+        data: {
+          OrdenId: orden.Id,
+          MaterialId: element.MaterialId,
+          Cantidad: element.Cantidad,
+          Subtotal: element.Subtotal
+        }
+      });
+    });
+
+    await Promise.all(createDetailsPromises);
+
+
     //actualiza el wallert
     const wallet= await prisma.wallet.findUnique({
-      where: { Id: id },
+      where: { IdUser: orderReq.IdUser },
           include: {
 
             User: true,

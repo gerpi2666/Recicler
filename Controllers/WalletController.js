@@ -61,4 +61,28 @@ module.exports.getById = async (req, res, next) => {
     res.json(response);
   }
 };
+
+module.exports.getByUser= async (req,res,next)=>{
+  try {
+    let Id=  parseInt(req.params.Id);
+    const wallet = await prisma.wallet.findUnique({
+      where: { IdUser: Id },
+        include: {
+          User: true,
+          
+        },
+    });
+    response.StatusCode= wallet? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = wallet ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=wallet;
+
+} catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+} finally {
+res.json(response);
+}
+}
  
