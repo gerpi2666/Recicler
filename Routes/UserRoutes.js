@@ -6,7 +6,8 @@ const userController=require('../Controllers/UserController')
 router.get('/',userController.get)
 router.get('/center', userController.getUserWithoutCenter)
 router.get('/client',userController.getClients)
+router.post('/login', userController.login);
 router.get("/:Id",userController.getById)
-router.post("/login", userController.login);
+
 
 module.exports=router

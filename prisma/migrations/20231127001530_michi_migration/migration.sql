@@ -36,6 +36,7 @@ CREATE TABLE `RecicleCenter` (
     `UserAdmin` INTEGER NOT NULL,
     `Enabled` BOOLEAN NOT NULL,
 
+    UNIQUE INDEX `RecicleCenter_UserAdmin_key`(`UserAdmin`),
     PRIMARY KEY (`Id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
