@@ -1,6 +1,6 @@
 export const Cupon = [
     {
-      
+      Name: 'CCM Cinemas',     
       Description: 'CCM CINEMAS 2D cualquier pelicula',
       ValiteDate: new Date('2023-12-31'), // Fecha de validez del cupón
       Price: 10.0, // Precio del cupón
@@ -10,6 +10,7 @@ export const Cupon = [
 
     },
     {
+      Name: 'Medismart',     
       Description: 'Examen Hemograma',
       ValiteDate: new Date('2024-06-30'),
       Price: 20.0,

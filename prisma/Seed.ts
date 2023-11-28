@@ -21,18 +21,18 @@ async function seed() {
   for (const cuponData of Cupon) {
     await prisma.cupon.create({
       data: {
+        Name: cuponData.Name,
         Description: cuponData.Description,
         ValiteDate: cuponData.ValiteDate,
         Price: cuponData.Price,
         Estado: cuponData.Estado,
         Category: { connect: { Id: cuponData.CategoryId } },
-        
+
         // Omite el campo User si no deseas asignar un usuario al crear el cupón
       },
     });
   }
-  
-  
+
   const users = await Users;
   for (const user of users) {
     // Crea el usuario en la base de datos

@@ -75,9 +75,10 @@ model Wallet{
 
 model Cupon{
 Id Int @id @default(autoincrement())
+Name String?
 IdUser Int?
 Description String
-Image Bytes?
+Image String?
 ValiteDate DateTime
 Price Decimal
 Estado Boolean
