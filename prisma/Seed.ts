@@ -5,7 +5,7 @@ import { Roles } from "./Seeds/Role";
 import { Users } from "./Seeds/Users";
 import { Materials } from "./Seeds/Material";
 import { Categorys } from "./Seeds/Category";
-import { Cupon } from "./Seeds/Cupon";
+import { Cupones } from "./Seeds/Cupon";
 
 const prisma = new PrismaClient();
 
@@ -18,10 +18,11 @@ async function seed() {
     data: Categorys,
   });
 
-  for (const cuponData of Cupon) {
+  for (const cuponData of Cupones) {
     await prisma.cupon.create({
       data: {
         Name: cuponData.Name,
+        Qr:{Qr: `data:image/png;base64,${cuponData.Qr}`},
         Description: cuponData.Description,
         ValiteDate: cuponData.ValiteDate,
         Price: cuponData.Price,

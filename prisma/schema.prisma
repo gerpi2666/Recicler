@@ -78,7 +78,7 @@ Id Int @id @default(autoincrement())
 Name String?
 IdUser Int?
 Description String
-Image String?
+Qr Json?
 ValiteDate DateTime
 Price Decimal
 Estado Boolean
