@@ -71,8 +71,9 @@ CREATE TABLE `Cupon` (
     `Name` VARCHAR(191) NULL,
     `IdUser` INTEGER NULL,
     `Description` VARCHAR(191) NOT NULL,
-    `Image` VARCHAR(191) NULL,
-    `ValiteDate` DATETIME(3) NOT NULL,
+    `Qr` JSON NULL,
+    `ValidateDateBegin` DATETIME(3) NOT NULL,
+    `ValiteDateFinish` DATETIME(3) NOT NULL,
     `Price` DECIMAL(65, 30) NOT NULL,
     `Estado` BOOLEAN NOT NULL,
 

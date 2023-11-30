@@ -80,7 +80,7 @@ IdUser Int?
 Description String
 Qr Json?
 ValidateDateBegin DateTime
-ValiteDateFinish DateTime
+ValidateDateFinish DateTime
 Price Decimal
 Estado Boolean
 Category Category[]

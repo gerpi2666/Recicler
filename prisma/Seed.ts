@@ -25,11 +25,10 @@ async function seed() {
         Qr: { Qr: `data:image/png;base64,${cuponData.Qr}` },
         Description: cuponData.Description,
         ValidateDateBegin: cuponData.ValidateDateBegin,
-        ValiteDateFinish: cuponData.ValiteDateFinish ,
+        ValidateDateFinish: cuponData.ValidateDateFinish,
         Price: cuponData.Price,
         Estado: cuponData.Estado,
         Category: { connect: { Id: cuponData.CategoryId } },
-
         // Omite el campo User si no deseas asignar un usuario al crear el cupón
       },
     });
@@ -76,7 +75,7 @@ async function seed() {
       Numero: "26731105",
       Email: "hermita@miravalles.net",
       Schecudale: "Lunes a viernes 8am a 12pm",
-      UserAdmin: 8,
+      UserAdmin: 11,
       Enabled: true,
       Materials:{
         connect: [{Id:1},{Id:4}]

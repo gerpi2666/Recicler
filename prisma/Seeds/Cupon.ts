@@ -1,12 +1,12 @@
-const qrcode = require('qrcode');
+const qrcode = require("qrcode");
 
 let Cupon = [
   {
     Name: "CCM Cinemas",
     Qr: "",
     Description: "CCM CINEMAS 2D cualquier pelicula",
-    ValidateDateBegin: new Date("2023-04-24") ,
-    ValiteDate: new Date("2023-12-31"), // Fecha de validez del cupón
+    ValidateDateBegin: new Date("2023-04-24"),
+    ValidateDateFinish: new Date("2023-12-31"), // Fecha de validez del cupón
     Price: 10.0, // Precio del cupón
     Estado: false, // Estado del cupón
     CategoryId: 3, // ID de la categoría relacionada
@@ -15,8 +15,8 @@ let Cupon = [
     Name: "Parque de diversiones",
     Qr: "",
     Description: "Pase especial",
-    ValidateDateBegin: new Date("2023-04-24") ,
-    ValiteDateFinish: new Date("2024-01-30"),
+    ValidateDateBegin: new Date("2023-04-24"),
+    ValidateDateFinish: new Date("2024-01-30"),
     Price: 20.0,
     Estado: false,
     CategoryId: 3,
@@ -25,8 +25,8 @@ let Cupon = [
     Name: "Vida Aventura",
     Qr: "",
     Description: "Tour de canopy",
-    ValidateDateBegin: new Date("2023-04-24") ,
-    ValiteDateFinish: new Date("2024-08-26"),
+    ValidateDateBegin: new Date("2023-04-24"),
+    ValidateDateFinish: new Date("2024-08-26"),
     Price: 200.0,
     Estado: false,
     CategoryId: 2,
@@ -35,8 +35,8 @@ let Cupon = [
     Name: "Destinos",
     Qr: "",
     Description: "Pase del dia Hilton Belen",
-    ValidateDateBegin: new Date("2023-04-24") ,
-    ValiteDateFinish: new Date("2024-02-21"),
+    ValidateDateBegin: new Date("2023-04-24"),
+    ValidateDateFinish: new Date("2024-02-21"),
     Price: 250.0,
     Estado: false,
     CategoryId: 2,
@@ -45,8 +45,8 @@ let Cupon = [
     Name: "Medismart",
     Qr: "",
     Description: "Examen Hemograma",
-    ValidateDateBegin: new Date("2023-04-24") ,
-    ValiteDateFinish: new Date("2024-06-30"),
+    ValidateDateBegin: new Date("2023-04-24"),
+    ValidateDateFinish: new Date("2024-06-30"),
     Price: 20.0,
     Estado: false,
     CategoryId: 1,
@@ -55,8 +55,8 @@ let Cupon = [
     Name: "Asembis",
     Qr: "",
     Description: "Examen de la vista",
-    ValidateDateBegin: new Date("2023-04-24") ,
-    ValiteDateFinish: new Date("2024-03-11"),
+    ValidateDateBegin: new Date("2023-04-24"),
+    ValidateDateFinish: new Date("2024-03-11"),
     Price: 40.0,
     Estado: false,
     CategoryId: 1,
@@ -64,10 +64,10 @@ let Cupon = [
   // ... Otros cupones
 ];
 
-const generateQRBase64 = async (text:any) => {
+const generateQRBase64 = async (text: any) => {
   try {
     const qrCodeDataURL = await qrcode.toDataURL(text);
-    return qrCodeDataURL.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+    return qrCodeDataURL.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
   } catch (error) {
     console.error("Error al generar el código QR:", error);
     return "";
@@ -80,4 +80,4 @@ Cupon.forEach(async (cupon) => {
   cupon.Qr = qrBase64;
 });
 
-export const Cupones=Cupon;
+export const Cupones = Cupon;
