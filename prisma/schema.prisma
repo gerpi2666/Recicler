@@ -79,7 +79,8 @@ Name String?
 IdUser Int?
 Description String
 Qr Json?
-ValiteDate DateTime
+ValidateDateBegin DateTime
+ValiteDateFinish DateTime
 Price Decimal
 Estado Boolean
 Category Category[]

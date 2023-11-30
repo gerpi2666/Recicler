@@ -1,15 +1,5 @@
 export const Centers = [
-  {
-    Name: "Hermita Guayabo",
-    Provincia: "Guanacaste",
-    Canton: "Bagaces",
-    Distrito: "Mogote",
-    Numero: "26731105",
-    Email: "hermita@miravalles.net",
-    Schecudale: "Lunes a viernes 8am a 12pm",
-    UserAdmin: 8,
-    Enabled: true,
-  },
+
   {
     Name: "Rancho Español",
     Provincia: "Alajuela",

@@ -22,9 +22,10 @@ async function seed() {
     await prisma.cupon.create({
       data: {
         Name: cuponData.Name,
-        Qr:{Qr: `data:image/png;base64,${cuponData.Qr}`},
+        Qr: { Qr: `data:image/png;base64,${cuponData.Qr}` },
         Description: cuponData.Description,
-        ValiteDate: cuponData.ValiteDate,
+        ValidateDateBegin: cuponData.ValidateDateBegin,
+        ValiteDateFinish: cuponData.ValiteDateFinish ,
         Price: cuponData.Price,
         Estado: cuponData.Estado,
         Category: { connect: { Id: cuponData.CategoryId } },
@@ -32,7 +33,7 @@ async function seed() {
         // Omite el campo User si no deseas asignar un usuario al crear el cupón
       },
     });
-  }
+  } 
 
   const users = await Users;
   for (const user of users) {
@@ -61,14 +62,38 @@ async function seed() {
     });
   }
 
-  await prisma.recicleCenter.createMany({
-    data: Centers,
-  });
-
-  // Crear un material de ejemplo
   await prisma.material.createMany({
     data: Materials,
   });
+
+
+  await prisma.recicleCenter.create({
+    data: {
+      Name: "Hermita Guayabo",
+      Provincia: "Guanacaste",
+      Canton: "Bagaces",
+      Distrito: "Mogote",
+      Numero: "26731105",
+      Email: "hermita@miravalles.net",
+      Schecudale: "Lunes a viernes 8am a 12pm",
+      UserAdmin: 8,
+      Enabled: true,
+      Materials:{
+        connect: [{Id:1},{Id:4}]
+      }
+    },
+  });
+
+   await prisma.recicleCenter.createMany({
+    data: Centers,
+  });
+ 
+
+  
+
+
+  
+  // Crear un material de ejemplo
 
   console.log("Seeds creados exitosamente.");
 }
