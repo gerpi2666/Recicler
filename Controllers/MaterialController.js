@@ -73,9 +73,7 @@ module.exports.create= async (req,res,next)=>{
         Color: requestMaterial.Color,
         Unit: requestMaterial.Unit,
         Price: requestMaterial.Price,
-       /*  RecicleCenter:{
-          connect: requestMaterial.Center.map(c => ({ Id: c.Id }))// Usar un objeto para conectar
-        } */
+       
       }
     })
     response.StatusCode= requestMaterial? HttpStatus.OK : HttpStatus.NOT_FOUND;

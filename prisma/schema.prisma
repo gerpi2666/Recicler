@@ -23,6 +23,7 @@ model User{
   Number String
   Direccion String
   Password String? // Cambia de Buffer a String
+  Enabled Boolean
   Orden Orden []
   Cupon Cupon[]
   RecicleCenter RecicleCenter []
@@ -74,9 +75,10 @@ model Wallet{
 
 model Cupon{
 Id Int @id @default(autoincrement())
+Name String?
 IdUser Int?
 Description String
-Image Bytes?
+Qr Json?
 ValiteDate DateTime
 Price Decimal
 Estado Boolean

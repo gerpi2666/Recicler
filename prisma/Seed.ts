@@ -5,7 +5,7 @@ import { Roles } from "./Seeds/Role";
 import { Users } from "./Seeds/Users";
 import { Materials } from "./Seeds/Material";
 import { Categorys } from "./Seeds/Category";
-import { Cupon } from "./Seeds/Cupon";
+import { Cupones } from "./Seeds/Cupon";
 
 const prisma = new PrismaClient();
 
@@ -18,21 +18,22 @@ async function seed() {
     data: Categorys,
   });
 
-  for (const cuponData of Cupon) {
+  for (const cuponData of Cupones) {
     await prisma.cupon.create({
       data: {
+        Name: cuponData.Name,
+        Qr:{Qr: `data:image/png;base64,${cuponData.Qr}`},
         Description: cuponData.Description,
         ValiteDate: cuponData.ValiteDate,
         Price: cuponData.Price,
         Estado: cuponData.Estado,
         Category: { connect: { Id: cuponData.CategoryId } },
-        
+
         // Omite el campo User si no deseas asignar un usuario al crear el cupón
       },
     });
   }
-  
-  
+
   const users = await Users;
   for (const user of users) {
     // Crea el usuario en la base de datos
@@ -54,6 +55,7 @@ async function seed() {
         Name: user.Name,
         Number: user.Number,
         Direccion: user.Direccion,
+        Enabled: user.Enabled,
         Password: user.Password, // Asumiendo que la contraseña ya está encriptada
       },
     });

@@ -9,6 +9,7 @@ CREATE TABLE `User` (
     `Number` VARCHAR(191) NOT NULL,
     `Direccion` VARCHAR(191) NOT NULL,
     `Password` VARCHAR(191) NULL,
+    `Enabled` BOOLEAN NOT NULL,
 
     UNIQUE INDEX `User_Identification_key`(`Identification`),
     UNIQUE INDEX `User_Email_key`(`Email`),
@@ -67,9 +68,10 @@ CREATE TABLE `Wallet` (
 -- CreateTable
 CREATE TABLE `Cupon` (
     `Id` INTEGER NOT NULL AUTO_INCREMENT,
+    `Name` VARCHAR(191) NULL,
     `IdUser` INTEGER NULL,
     `Description` VARCHAR(191) NOT NULL,
-    `Image` LONGBLOB NULL,
+    `Image` VARCHAR(191) NULL,
     `ValiteDate` DATETIME(3) NOT NULL,
     `Price` DECIMAL(65, 30) NOT NULL,
     `Estado` BOOLEAN NOT NULL,
