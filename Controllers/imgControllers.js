@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
         const extension = path.extname(file.originalname);
         console.log('VALOR cupon', Cupon)
         if(Cupon){
-            const filename = `Cupon${Name}${extension}`;
+            const filename = `${Name}${extension}`;
             cb(null,filename);
         }else{
             const filename = `${Name}${extension}`;

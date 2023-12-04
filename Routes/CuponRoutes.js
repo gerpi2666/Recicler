@@ -5,6 +5,7 @@ const cuponController=require('../Controllers/CuponController')
 
 router.get('/',cuponController.get)
 router.post('/',cuponController.create)
+router.put('/:Id',cuponController.update)
 router.post('/change',cuponController.change)
 router.get("/:Id",cuponController.getById)
 router.get('/category/:Id', cuponController.getByCategory)
