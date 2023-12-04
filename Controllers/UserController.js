@@ -118,9 +118,9 @@ module.exports.getClients=async (req,res,next)=>{
 module.exports.login = async (request, response, next) => {
   let userReq = request.body;
   //Buscar el usuario según el email dado
-  const user = await prisma.Usuario.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
-      email: userReq.email,
+      Email: userReq.email,
     },
   });
   //Sino lo encuentra según su email
@@ -131,7 +131,7 @@ module.exports.login = async (request, response, next) => {
     });
   }
   //Verifica la contraseña
-  const checkPassword=await bcrypt.compare(userReq.password, user.password);
+  const checkPassword=await bcrypt.compare(userReq.password, user.Password);
   if(checkPassword === false){
     response.status(401).send({
       success:false,
