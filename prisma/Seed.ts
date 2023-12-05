@@ -6,6 +6,7 @@ import { Users } from "./Seeds/Users";
 import { Materials } from "./Seeds/Material";
 import { Categorys } from "./Seeds/Category";
 import { Cupones } from "./Seeds/Cupon";
+import { Orden } from "./Seeds/Orden";
 
 const prisma = new PrismaClient();
 
@@ -114,7 +115,11 @@ async function seed() {
     },
   });
  
-
+  for (const orden of Orden){
+    await prisma.orden.create({
+      data: orden
+    });
+  }
   
 
 
