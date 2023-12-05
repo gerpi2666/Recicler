@@ -16,6 +16,11 @@ const prisma = new PrismaClient();
 const response= new ResponseModel();
 //#endregion
 
+const hashPassword = async (password) => {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  return hashedPassword; // Contraseña hash como string
+}
+
 module.exports.get = async (req, res, next) => {
    try {
     const users = await prisma.user.findMany({
@@ -67,6 +72,31 @@ module.exports.getById = async (req, res, next) => {
 
 };
 
+module.exports.getByEmail=async (req,res,next) =>{
+  try {
+    
+    let data= req.body
+
+    const user= await prisma.user.findUnique({
+      where:{
+        Email: data.Email
+      }
+    })
+
+    response.StatusCode= user !=null || undefined? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = user !=null || undefined ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=user !=null || undefined? "Informacion no disponible": user;
+
+} catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+} finally {
+    res.json(response);
+}
+};
+
 module.exports.getUserWithoutCenter=async (req,res,next)=>{
   try {
     const users=await prisma.user.findMany({
@@ -88,7 +118,7 @@ module.exports.getUserWithoutCenter=async (req,res,next)=>{
   } finally {
     res.json(response);
   }
-}
+};
 
 module.exports.getClients=async (req,res,next)=>{
   try {
@@ -158,4 +188,149 @@ module.exports.login = async (request, response, next) => {
   }
 };
 
+module.exports.register=async( req,res,next)=>{
+  try {
+    
+    let data= req.body
 
+    const user =await prisma.user.create({
+      data:{
+        Name: data.Name,
+        Email: data.Email,
+        Identification: data.Identification,
+        Direccion:data.Direccion,
+        Number: data.Number,
+        Enabled: true,
+        Password: await hashPassword(data.Password),
+        Role:{
+          connect: {Id: 3},
+        }
+      }
+    })
+
+    response.StatusCode= user? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = user ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=user;
+
+} catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+} finally {
+    res.json(response);
+}
+};
+
+module.exports.create= async (req,res, next)=>{
+  try {
+
+
+    let data= req.body
+    const user= await prisma.user.create({
+      data:{
+        Name: data.Name,
+        Email: data.Email,
+        Identification: data.Identification,
+        Direccion:data.Direccion,
+        Number: data.Number,
+        Enabled: data.Enabled,
+        Password: await hashPassword(data.Password),
+        Role:{
+          connect: {Id: 3},
+        }
+      }
+    })
+
+    response.StatusCode= user? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = user ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=user;
+
+} catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+} finally {
+    res.json(response);
+}
+
+};
+
+module.exports.update= async(req, res, next)=>{
+  try {
+
+    let id = parseInt(req.params.Id);
+    let data= req.body
+
+    const uOld= await prisma.user.findUnique({
+      where:{
+        Id: id
+      },
+      include:{
+        Role:true
+      }
+    })
+
+    const user= await prisma.user.update({
+      where:{
+        Id: id
+      },
+      data:{
+        Name: data.Name,
+        Email: data.Email,
+        Identification: data.Identification,
+        Direccion:data.Direccion,
+        Number: data.Number,
+        Role:{
+          
+          connect: {Id: 2},
+        }
+      }
+    })
+
+    response.StatusCode= user? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = user ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=user;
+
+} catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+} finally {
+    res.json(response);
+}
+
+};
+
+module.exports.updatePass=async(req,res,next)=>{
+  try {
+
+
+    let data= req.body
+    const user= await prisma.user.update({
+      where:{
+        Email: data.Email
+      },
+      data:{
+        
+        Password: await hashPassword(data.Password),
+        
+      }
+    })
+
+    response.StatusCode= user? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    response.Message = user ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+    response.Data=user;
+
+} catch (error) {
+
+    response.StatusCode = HttpStatus.SERVER_ERROR;
+    response.Message = `Error del servidor:\n${error.message}`;
+
+} finally {
+    res.json(response);
+}
+
+};
