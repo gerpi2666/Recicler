@@ -9,6 +9,7 @@ const {HttpStatus}= require('../Models/Enums')
 const jwt = require("jsonwebtoken");
 //npm install bcrypt
 const bcrypt = require("bcrypt");
+const { use } = require('../Routes/RoleRoutes');
 //#endregion
 
 //#region Intancias
@@ -26,7 +27,11 @@ module.exports.get = async (req, res, next) => {
     const users = await prisma.user.findMany({
       orderBy: {
         Id: 'asc',
+      },
+      include:{
+        Role:true
       }
+
     });
 
     response.StatusCode= users? HttpStatus.OK : HttpStatus.NOT_FOUND;
@@ -282,6 +287,7 @@ module.exports.update= async(req, res, next)=>{
         Identification: data.Identification,
         Direccion:data.Direccion,
         Number: data.Number,
+        Enabled: data.Enabled,
         Role:{
           
           connect: {Id: 2},
@@ -333,4 +339,40 @@ module.exports.updatePass=async(req,res,next)=>{
     res.json(response);
 }
 
+};
+
+module.exports.disable=async (req,res,next)=>{
+try {
+
+  let id = parseInt(req.params.Id);
+    let data= req.body
+
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        Id: id
+      }
+    });
+    
+    const user= await prisma.user.update({
+      where:{
+        Id:id
+      },
+      data:{
+        Enabled:  !currentUser.Enabled
+        
+      }
+    })
+
+  response.StatusCode= user !=null || undefined? HttpStatus.OK : HttpStatus.NOT_FOUND;
+  response.Message = user !=null || undefined? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+  response.Data= user !=null || undefined ?`Usuario ${user.Enabled? 'habilitado':'deshabilitado'}: ${user.Identification}  ${user.Name}`:"Usuario no encontrado";
+
+} catch (error) {
+
+  response.StatusCode = HttpStatus.SERVER_ERROR;
+  response.Message = `Error del servidor:\n${error.message}`;
+
+} finally {
+  res.json(response);
+}
 };

@@ -14,6 +14,7 @@ router.get('/email',userController.getByEmail)
 router.get('/center', userController.getUserWithoutCenter)
 router.get('/client',userController.getClients)
 
+router.put('/disabled/:Id',userController.disable)
 router.post('/register',userController.register)
 router.post("/login", userController.login);
 
