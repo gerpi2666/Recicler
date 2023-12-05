@@ -208,7 +208,7 @@ module.exports.register=async( req,res,next)=>{
         Enabled: true,
         Password: await hashPassword(data.Password),
         Role:{
-          connect: {Id: 3},
+          connect: {Id: 2},
         }
       }
     })
@@ -315,20 +315,39 @@ module.exports.updatePass=async(req,res,next)=>{
 
 
     let data= req.body
-    const user= await prisma.user.update({
+
+    const currentUser= await prisma.user.findUnique({
       where:{
-        Email: data.Email
-      },
-      data:{
-        
-        Password: await hashPassword(data.Password),
-        
+        Id: data.Id
       }
+      
     })
 
-    response.StatusCode= user? HttpStatus.OK : HttpStatus.NOT_FOUND;
-    response.Message = user ? 'Informacion retornada correctamente' : 'Informacion no encontrada';
-    response.Data=user;
+    const checkPassword=await bcrypt.compare(data.Password, currentUser.Password);
+
+    if(checkPassword){
+      const user= await prisma.user.update({
+        where:{
+          Email: data.Email
+        },
+        data:{
+          
+          Password: await hashPassword(data.Password),
+          
+        }
+      })
+
+      response.StatusCode= user !=null || undefined? HttpStatus.OK : HttpStatus.NOT_FOUND;
+      response.Message = user  !=null || undefined? 'Informacion retornada correctamente' : 'Informacion no encontrada';
+      response.Data=user!=null || undefined?'Credenciales cambiadas correctamente':'Eroor'
+    }else{
+      response.StatusCode=  HttpStatus.NOT_FOUND;
+      response.Message =  'Informacion no encontrada';
+      response.Data='Credenciales no validas ';
+    }
+    
+
+   
 
 } catch (error) {
 
