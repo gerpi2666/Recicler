@@ -175,10 +175,17 @@ module.exports.login = async (request, response, next) => {
   }else{
     //Usuario correcto
     //Crear el payload
+    const Role= await prisma.role.findUnique({
+      where:{
+        Id:user.IdRol
+      }
+    })
+
     const payload={
       id: user.Id,
       email: user.Email,
-      role: user.Id
+      roleId: user.IdRol,
+      role: Role.Name
     }
     //Crear el token
     const token= jwt.sign(payload,process.env.SECRET_KEY,{
