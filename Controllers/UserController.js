@@ -325,7 +325,7 @@ module.exports.updatePass=async(req,res,next)=>{
 
     const currentUser= await prisma.user.findUnique({
       where:{
-        Id: data.Id
+        Email: data.Email
       }
       
     })
@@ -339,7 +339,7 @@ module.exports.updatePass=async(req,res,next)=>{
         },
         data:{
           
-          Password: await hashPassword(data.Password),
+          Password: await hashPassword(data.NewPassword),
           
         }
       })

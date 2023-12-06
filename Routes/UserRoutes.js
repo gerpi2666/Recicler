@@ -7,7 +7,7 @@ router.get('/',userController.get)
 router.post('/',userController.create)
 router.put('/:Id',userController.update)
 
-router.put('/pass',userController.updatePass)
+router.post('/pass',userController.updatePass)
 
 
 router.get('/email',userController.getByEmail)
