@@ -19,7 +19,11 @@ module.exports.get = async (req, res, next) => {
     const recicleCenter = await prisma.recicleCenter.findMany({
       orderBy: {
         Id: 'asc',
-      }
+        
+      },include: {
+        User:true,
+        Materials: true
+      },
     });
 
     response.StatusCode= recicleCenter? HttpStatus.OK : HttpStatus.NOT_FOUND;
